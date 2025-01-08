@@ -3,6 +3,20 @@ from django.contrib.auth.decorators import permission_required
 from .models import Document
 from bookshelf.models import Book
 
+from .forms import ExampleForm
+
+def example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            example_field = form.cleaned_data['example_field']
+            # Perform any logic, e.g., save to database or display message
+            return render(request, 'bookshelf/success.html', {'example_field': example_field})
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
 def book_list(request):
     query = request.GET.get('q', '')
     if query:
