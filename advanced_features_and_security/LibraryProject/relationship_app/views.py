@@ -2,11 +2,38 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
 from django.views.generic.detail import DetailView
 from .models import Library
+from .models import Document
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import permission_required
+
+@permission_required('relationship_app.can_view', raise_exception=True)
+def document_list(request):
+    documents = Document.objects.all()
+    return render(request, 'relationship_app/document_list.html', {'documents': documents})
+
+@permission_required('relationship_app.can_create', raise_exception=True)
+def document_create(request):
+    if request.method == 'POST':
+        # Handle form submission
+        pass
+    return render(request, 'relationship_app/document_form.html')
+
+@permission_required('relationship_app.can_edit', raise_exception=True)
+def document_edit(request, pk):
+    document = get_object_or_404(Document, pk=pk)
+    if request.method == 'POST':
+        # Handle form submission
+        pass
+    return render(request, 'relationship_app/document_form.html', {'document': document})
+
+@permission_required('relationship_app.can_delete', raise_exception=True)
+def document_delete(request, pk):
+    document = get_object_or_404(Document, pk=pk)
+    document.delete()
+    return redirect('document_list')
 
 @permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):

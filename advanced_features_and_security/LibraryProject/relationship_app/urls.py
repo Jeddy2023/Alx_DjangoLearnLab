@@ -4,6 +4,11 @@ import relationship_app.views as views
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
+    path('documents/', views.document_list, name='document_list'),
+    path('documents/create/', views.document_create, name='document_create'),
+    path('documents/<int:pk>/edit/', views.document_edit, name='document_edit'),
+    path('documents/<int:pk>/delete/', views.document_delete, name='document_delete'),
+    
     path("books/", list_books, name="list_books"),
     path('book/add_book/', views.add_book, name='add_book'),
     path('book/edit_book/', views.edit_book, name='edit_book'),
