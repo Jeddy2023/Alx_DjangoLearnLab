@@ -54,6 +54,23 @@ CSP_CONNECT_SRC = ("'self'",)
 CSP_FORM_ACTION = ("'self'",)
 CSP_BLOCK_ALL_MIXED_CONTENT = True
 
+# Enforce HTTPS
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP traffic to HTTPS
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # Enforce HTTPS for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow domain to be preloaded in HSTS lists
+
+# Secure Cookies
+SESSION_COOKIE_SECURE = True  # Ensure session cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only sent over HTTPS
+
+# Additional HTTP Headers for Security
+X_FRAME_OPTIONS = "DENY"  # Protect against clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME-sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable the browser's XSS filter
+
 # Application definition
 
 INSTALLED_APPS = [
