@@ -16,7 +16,7 @@ def add_book(request):
         published_date = request.POST.get('published_date')
         book = Book.objects.create(title=title, author=author, published_date=published_date)
         return redirect('book_list')
-    return render(request, 'relationship_app/add_book.html')
+    return render(request, 'relationship_app/add_book.html')    
 
 # View to edit an existing book
 @permission_required('relationship_app.can_change_book', raise_exception=True)
