@@ -27,4 +27,4 @@ def document_edit(request, pk):
 def document_delete(request, pk):
     document = get_object_or_404(Document, pk=pk)
     document.delete()
-    return redirect('document_list')
+    return redirect('book_list')
