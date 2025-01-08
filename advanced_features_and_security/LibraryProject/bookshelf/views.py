@@ -1,7 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import permission_required
 from .models import Document
+from bookshelf.models import Book
+
+def book_list(request):
+    query = request.GET.get('q', '')
+    if query:
+        # Validate user input
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def document_list(request):
