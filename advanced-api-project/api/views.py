@@ -1,23 +1,23 @@
 from rest_framework import generics
 from .models import Book
 from .serializers import BookSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 class CreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Only authenticated users can create books
     """
     View to create a new book.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can create books
 
 class UpdateView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]  # Only authenticated users can update books
     """
     View to update an existing book.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can update books
 
 class DeleteView(generics.DestroyAPIView):
     """
@@ -28,12 +28,12 @@ class DeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]  # Only authenticated users can delete books
 
 class BookListView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Only authenticated users can create books
     """
     View to list all books or create a new book.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Allows unauthenticated users to read the list of books, but only authenticated users can create books
 
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -41,4 +41,4 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Allows unauthenticated users to read book details, but only authenticated users can update or delete
+    permission_classes = [IsAuthenticated]  # Only authenticated users can update or delete
