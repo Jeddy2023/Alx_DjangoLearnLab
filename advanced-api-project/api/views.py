@@ -2,6 +2,8 @@ from rest_framework import generics
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class CreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Only authenticated users can create books
@@ -28,12 +30,20 @@ class DeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]  # Only authenticated users can delete books
 
 class BookListView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Only authenticated users can create books
     """
     View to list all books or create a new book.
+    Supports filtering, searching, and ordering.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allows unauthenticated users to read the list of books
+
+    # Enable filtering, searching, and ordering
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filterset_fields = ['title', 'author', 'publication_year']  # Allow filtering by title, author, and publication_year
+    search_fields = ['title', 'author__name']  # Enable search on book title and author name
+    ordering_fields = ['title', 'publication_year']  # Allow ordering by title or publication year
+    ordering = ['title']
 
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
